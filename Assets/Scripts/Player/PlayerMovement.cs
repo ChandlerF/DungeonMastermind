@@ -79,20 +79,9 @@ public class PlayerMovement : Entity
 
 
 
-    public override void Damage(float amount, Vector2 location)
+    public override void Damage(float amount, Vector3 location)
     {
-        Debug.Log("- " + amount + "hp");
-
-        _rb.AddForce((base.MoveSpeed * (amount / 10)) * -location, ForceMode2D.Impulse);
-
-
-        base.CurrentHealth -= amount;
-
-        if(base.CurrentHealth <= 0)
-        {
-            //Death
-            Destroy(gameObject);
-        }
+        base.Damage(amount, location);
     }
 
 

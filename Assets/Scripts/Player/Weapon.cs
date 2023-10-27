@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
+    public bool CanAttack = true;
     [SerializeField] private string _fxName;
     private int _fxState;
     [SerializeField] private AudioSource _sound;
     [SerializeField] private float _damageAmount, _attackDelay;
+    private float _currentAttackDelay;
     private Animation _animation;
     public LayerMask HostileLayers;
     [SerializeField] private Animator _fxAnim;
@@ -16,17 +18,42 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
+        _currentAttackDelay = _attackDelay;
         _fxState = Animator.StringToHash(_fxName);
         _animation = GetComponent<Animation>();
     }
 
+
+    private void Update()
+    {
+        if(_currentAttackDelay < 0)
+        {
+            CanAttack = true;
+            _currentAttackDelay = _attackDelay;
+        }
+        else
+        {
+            _currentAttackDelay -= Time.deltaTime;
+        }
+    }
+
+
+
+
+
+
     public void WeaponAttack()
     {
+        if (!CanAttack) return;
+
+
         _animation.Play("SwordSwing1");
         _fxAnim.Play(_fxState);
-        //Play Sound
-        //Play Anim  -- Enable hitbox
 
+        //Play Sound
+        // Enable hitbox
+
+        CanAttack = false;
     }
 
 
@@ -70,7 +97,6 @@ public class Weapon : MonoBehaviour
         if (col.gameObject.TryGetComponent<Entity>(out Entity entity) &&
            (HostileLayers.value & 1 << col.gameObject.layer) == 1 << col.gameObject.layer)
         {
-            Debug.Log("Hit! " + col.gameObject.name);
             entity.Damage(_damageAmount, transform.position);
         }
     }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4183337767040683140}
   - component: {fileID: 4183337767040683143}
   - component: {fileID: 4183337767040683138}
+  - component: {fileID: 5583354233031007023}
   m_Layer: 0
   m_Name: Sword-Wood
   m_TagString: Untagged
@@ -115,14 +116,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0732a4d18de88b94d95dca05817cd3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanAttack: 1
+  CanDamage: 0
   _fxName: FXSwordNormal
   _sound: {fileID: 0}
   _damageAmount: 10
-  _attackDelay: 0.5
+  _attackDelay: 0.4
   HostileLayers:
     serializedVersion: 2
     m_Bits: 0
   _fxAnim: {fileID: 5076159043606839065}
+--- !u!61 &5583354233031007023
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4183337767040683142}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.17212635}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 1.3125}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.8498697, y: 1.6567527}
+  m_EdgeRadius: 0
 --- !u!1 &7687410198590648467
 GameObject:
   m_ObjectHideFlags: 0
