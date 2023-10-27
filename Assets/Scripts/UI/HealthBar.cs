@@ -1,8 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class HealthBar : MonoBehaviour
 {
