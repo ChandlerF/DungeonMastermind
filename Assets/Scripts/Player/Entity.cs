@@ -18,6 +18,10 @@ public class Entity : MonoBehaviour, IDamageable
 
     private List<Color> _spriteColors = new List<Color>();
 
+    [SerializeField] private GameObject _dmgPopUp, _healthBarObject;
+    private HealthBar _healthBar;
+    private GameObject _spawnedHealthBar;
+
 
 
     protected virtual void Start()
@@ -28,13 +32,19 @@ public class Entity : MonoBehaviour, IDamageable
 
         _whiteMaterial = Resources.Load<Material>("FlashWhite");
 
-
+        if (_healthBarObject == null)
+        {
+            _healthBarObject = Resources.Load<GameObject>("HealthBarCanvas");
+        }
 
         foreach (SpriteRenderer sr in GetComponentsInChildren<SpriteRenderer>())
         {
             _spriteColors.Add(sr.color);
         }
 
+         _spawnedHealthBar = Instantiate(_healthBarObject, transform.position, Quaternion.identity);
+        _healthBar = _spawnedHealthBar.GetComponentInChildren<HealthBar>();
+        _healthBar.Target = gameObject;
 
         _startMaterial = _sr.material;
         CurrentHealth = MaxHealth;
@@ -59,9 +69,13 @@ public class Entity : MonoBehaviour, IDamageable
         if (CurrentHealth <= 0)
         {
             //Death
+            Destroy(_spawnedHealthBar);
             Destroy(gameObject);
+            return;
         }
-        
+
+        //GameObject spawnedPopUp = Instantiate(_dmgPopUp, transform.position, Quaternion.identity);
+        _healthBar.SetFill(CurrentHealth, MaxHealth);
 
         _rb.AddForce((_rb.drag * (amount / 8)) * (transform.position - location).normalized, ForceMode2D.Impulse);
         _canTakeDamage = false;

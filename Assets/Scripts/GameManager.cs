@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(GameManager.Instance is null)
+        if(GameManager.Instance == null)
         {
             GameManager.Instance = this;
             DontDestroyOnLoad(this.gameObject);

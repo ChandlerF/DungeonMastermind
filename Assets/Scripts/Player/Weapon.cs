@@ -14,6 +14,7 @@ public class Weapon : MonoBehaviour
     private Animation _animation;
     public LayerMask HostileLayers;
     [SerializeField] private Animator _fxAnim;
+    private Entity _parent;
 
 
     private void Start()
@@ -21,6 +22,7 @@ public class Weapon : MonoBehaviour
         _currentAttackDelay = _attackDelay;
         _fxState = Animator.StringToHash(_fxName);
         _animation = GetComponent<Animation>();
+        _parent = GetComponentInParent<Entity>();
     }
 
 
@@ -29,7 +31,6 @@ public class Weapon : MonoBehaviour
         if(_currentAttackDelay < 0)
         {
             CanAttack = true;
-            _currentAttackDelay = _attackDelay;
         }
         else
         {
@@ -53,6 +54,7 @@ public class Weapon : MonoBehaviour
         //Play Sound
         // Enable hitbox
 
+        _currentAttackDelay = _attackDelay;
         CanAttack = false;
     }
 
@@ -97,7 +99,7 @@ public class Weapon : MonoBehaviour
         if (col.gameObject.TryGetComponent<Entity>(out Entity entity) &&
            (HostileLayers.value & 1 << col.gameObject.layer) == 1 << col.gameObject.layer)
         {
-            entity.Damage(_damageAmount, transform.position);
+            entity.Damage(_damageAmount, _parent.transform.position);
         }
     }
 }

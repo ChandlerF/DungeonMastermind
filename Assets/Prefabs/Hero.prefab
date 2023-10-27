@@ -215,6 +215,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _rb: {fileID: 0}
+  _dmgPopUp: {fileID: 0}
+  _healthBarObject: {fileID: 8723174381450150130, guid: 10f881920f883bb4283691db34b582aa, type: 3}
   MovementInput: {x: 0, y: 0}
 --- !u!114 &8730871909505342041
 MonoBehaviour:
