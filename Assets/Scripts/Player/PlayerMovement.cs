@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : Entity
 {
     public Vector2 MovementInput = Vector2.zero;
-    private Rigidbody2D _rb;
     private Animator _animator;
     private float _lockedTime;
     private int _currentAnimState;
@@ -24,7 +23,6 @@ public class PlayerMovement : Entity
     private void Start()
     {
         _startScale = transform.localScale;
-        _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
     }
 

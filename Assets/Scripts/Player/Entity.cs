@@ -11,8 +11,25 @@ public class Entity : MonoBehaviour, IDamageable
     private float _invincibleTimerStart = 0.2f, _invincibleTimer;
     private bool _canTakeDamage = true;
 
+    private Color _startColor, _flashColor = Color.white;
+    private Material _startMaterial, _whiteMaterial;
+    private SpriteRenderer _sr;
+    public Rigidbody2D _rb;
+
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        _sr = GetComponent<SpriteRenderer>();
+    }
+
+
     private void Start()
     {
+        _whiteMaterial = Resources.Load<Material>("FlashWhite");
+
+        _startColor = _sr.color;
+        _startMaterial = _sr.material;
         CurrentHealth = MaxHealth;
         _invincibleTimer = _invincibleTimerStart;
     }
@@ -39,9 +56,10 @@ public class Entity : MonoBehaviour, IDamageable
         }
         
 
-        GetComponent<Rigidbody2D>().AddForce((MoveSpeed * amount) * (transform.position - location).normalized, ForceMode2D.Impulse);
+        _rb.AddForce((MoveSpeed * amount) * (transform.position - location).normalized, ForceMode2D.Impulse);
         _canTakeDamage = false;
         _invincibleTimer = _invincibleTimerStart;
+        StartCoroutine(FlashWhite(_invincibleTimerStart));
     }
 
 
@@ -55,5 +73,18 @@ public class Entity : MonoBehaviour, IDamageable
         {
             _invincibleTimer -= Time.deltaTime;
         }
+    }
+
+
+    IEnumerator FlashWhite(float duration)
+    {
+        _sr.color = _flashColor;
+        _sr.material = _whiteMaterial;
+
+
+        yield return new WaitForSeconds(duration);
+
+        _sr.color = _startColor;
+        _sr.material = _startMaterial;
     }
 }
