@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0102f6f9c9065f441a368a15db6f34cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 20
+  MaxHealth: 100
   CurrentHealth: 0
   MoveSpeed: 600
   MoveSpeedMultiplier: 1
@@ -214,6 +214,7 @@ MonoBehaviour:
   HostileLayers:
     serializedVersion: 2
     m_Bits: 512
+  _rb: {fileID: 0}
   MovementInput: {x: 0, y: 0}
 --- !u!114 &8730871909505342041
 MonoBehaviour:

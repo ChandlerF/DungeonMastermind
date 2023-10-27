@@ -11,24 +11,31 @@ public class Entity : MonoBehaviour, IDamageable
     private float _invincibleTimerStart = 0.2f, _invincibleTimer;
     private bool _canTakeDamage = true;
 
-    private Color _startColor, _flashColor = Color.white;
+    private Color _flashColor = Color.white;
     private Material _startMaterial, _whiteMaterial;
     private SpriteRenderer _sr;
     public Rigidbody2D _rb;
 
+    private List<Color> _spriteColors = new List<Color>();
 
-    private void Awake()
+
+
+    protected virtual void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponent<SpriteRenderer>();
-    }
 
 
-    private void Start()
-    {
         _whiteMaterial = Resources.Load<Material>("FlashWhite");
 
-        _startColor = _sr.color;
+
+
+        foreach (SpriteRenderer sr in GetComponentsInChildren<SpriteRenderer>())
+        {
+            _spriteColors.Add(sr.color);
+        }
+
+
         _startMaterial = _sr.material;
         CurrentHealth = MaxHealth;
         _invincibleTimer = _invincibleTimerStart;
@@ -36,7 +43,7 @@ public class Entity : MonoBehaviour, IDamageable
 
 
 
-    private void Update()
+    protected virtual void Update()
     {
         InvincibleTimer();
     }
@@ -56,7 +63,7 @@ public class Entity : MonoBehaviour, IDamageable
         }
         
 
-        _rb.AddForce((MoveSpeed * amount) * (transform.position - location).normalized, ForceMode2D.Impulse);
+        _rb.AddForce((_rb.drag * (amount / 8)) * (transform.position - location).normalized, ForceMode2D.Impulse);
         _canTakeDamage = false;
         _invincibleTimer = _invincibleTimerStart;
         StartCoroutine(FlashWhite(_invincibleTimerStart));
@@ -78,13 +85,31 @@ public class Entity : MonoBehaviour, IDamageable
 
     IEnumerator FlashWhite(float duration)
     {
+        foreach (SpriteRenderer sr in GetComponentsInChildren<SpriteRenderer>())
+        {
+            sr.color = _flashColor;
+            sr.material = _whiteMaterial;
+        }
+
+
+
         _sr.color = _flashColor;
         _sr.material = _whiteMaterial;
 
 
         yield return new WaitForSeconds(duration);
 
-        _sr.color = _startColor;
+
+        int i = 0;
+        foreach (SpriteRenderer sr in GetComponentsInChildren<SpriteRenderer>())
+        {
+            sr.color = _spriteColors[i];
+            sr.material = _startMaterial;
+
+            i++;
+        }
+
+
         _sr.material = _startMaterial;
     }
 }

@@ -20,14 +20,16 @@ public class PlayerMovement : Entity
     #endregion
 
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _startScale = transform.localScale;
         _animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         AnimCheck();
     }
 
@@ -133,15 +135,4 @@ public class PlayerMovement : Entity
             transform.localScale = _startScale;
         }
     }
-
-    public void OnPlayerJoined()
-    {
-        //Add to list on Game Manager
-        Debug.Log("ssss");
-
-        
-        //SendMessage() is Like Invoke() but for other scripts but on GameObjects instead (ish)
-        //Learn: Unity and C# Events, Delegates, Classes, Structs
-    }
-
 }

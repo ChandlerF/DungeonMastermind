@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     //Add Sound
     //Add Death
     //Then Add Enemies
-
+    //Learn: Unity and C# Events, Delegates, Classes, Structs
 
     private void Awake()
     {
