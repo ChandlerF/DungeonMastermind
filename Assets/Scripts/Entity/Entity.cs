@@ -20,7 +20,7 @@ public class Entity : MonoBehaviour, IDamageable
 
     [SerializeField] private GameObject _dmgPopUp, _healthBarObject;
     private HealthBar _healthBar;
-    private GameObject _spawnedHealthBar;
+    private GameObject _spawnedHealthBar = null;
 
 
 
@@ -42,9 +42,7 @@ public class Entity : MonoBehaviour, IDamageable
             _spriteColors.Add(sr.color);
         }
 
-         _spawnedHealthBar = Instantiate(_healthBarObject, transform.position, Quaternion.identity);
-        _healthBar = _spawnedHealthBar.GetComponentInChildren<HealthBar>();
-        _healthBar.Target = gameObject;
+         
 
         _startMaterial = _sr.material;
         CurrentHealth = MaxHealth;
@@ -69,15 +67,17 @@ public class Entity : MonoBehaviour, IDamageable
         if (CurrentHealth <= 0)
         {
             //Death
-            Destroy(_spawnedHealthBar);
+            if(_spawnedHealthBar != null) Destroy(_spawnedHealthBar);
             Destroy(gameObject);
             return;
         }
 
+        if (CurrentHealth != MaxHealth && _spawnedHealthBar == null) SpawnHealthBar();
+
         //GameObject spawnedPopUp = Instantiate(_dmgPopUp, transform.position, Quaternion.identity);
         _healthBar.SetFill(CurrentHealth, MaxHealth);
 
-        _rb.AddForce((_rb.drag * (amount / 8)) * (transform.position - location).normalized, ForceMode2D.Impulse);
+        _rb.AddForce((_rb.drag * (amount / 9)) * (transform.position - location).normalized, ForceMode2D.Impulse);
         _canTakeDamage = false;
         _invincibleTimer = _invincibleTimerStart;
         StartCoroutine(FlashWhite(_invincibleTimerStart));
@@ -125,5 +125,12 @@ public class Entity : MonoBehaviour, IDamageable
 
 
         _sr.material = _startMaterial;
+    }
+
+    private void SpawnHealthBar()
+    {
+        _spawnedHealthBar = Instantiate(_healthBarObject, transform.position, Quaternion.identity);
+        _healthBar = _spawnedHealthBar.GetComponentInChildren<HealthBar>();
+        _healthBar.Target = gameObject;
     }
 }
